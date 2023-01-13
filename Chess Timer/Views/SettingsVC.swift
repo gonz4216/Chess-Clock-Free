@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SettingsVC.swift
 //  Chess Timer
 //
 //  Created by Ethan Gonsalves on 2023-01-12.
@@ -7,13 +7,25 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class SettingsVC: UIViewController {
 
+    
+   
+ 
+    
+    
+ 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-
+       
+      
+               
+     }
+    
+    
+   
+  
+    
 
 }
-
