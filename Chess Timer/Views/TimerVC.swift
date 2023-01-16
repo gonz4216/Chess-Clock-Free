@@ -14,9 +14,14 @@ class TimerVC: UIViewController {
 
     var didResetDelegate: TimerVCDelegate?
  
-    var timer: Timer = Timer()
+    var topTeamTimer: Timer = Timer()
+    var bottomTeamTimer: Timer = Timer()
+    
+    
     var count: Int = Int()
     var timerCounting = false
+    var greenInPlay = false
+    var darkInPlay = false
   
     
     
@@ -31,20 +36,80 @@ class TimerVC: UIViewController {
     @IBOutlet var greenTeamLabel: UILabel!
     @IBOutlet var blackTeamLabel: UILabel!
     
-    
+    @IBOutlet var topButton: UIButton!
+    @IBOutlet var bottomButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         rotate()
-        
-        
+        print("WORKED")
+ 
     }
  
-   
+   //to do make another clock
+    //redo process for the bottom team
+    //get a clickable view that allows start and stop time
     
+    @IBAction func darkTeamPlayTapped(_ sender: UIButton) {
+    print("TAPPED")
+        darkInPlay = true
+        if !darkInPlay {
+            topButton.isEnabled = false
+            bottomTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(bottomTimerCounter), userInfo: nil, repeats: true)
+           
+           
+           
+        } else {
+            topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
+            bottomButton.isEnabled = false
+            return bottomTeamTimer.invalidate()
+        }
+        
+       
+     
+        if count <= 0 {
+            let nilPauses = UIAlertController(title: "No time set", message: "go to settings to add the time", preferredStyle: .alert)
+            nilPauses.addAction(UIAlertAction(title: "No time", style: .default))
+            self.present(nilPauses, animated: true)
+            return
+        }
+        
+        
+             
+        
+         
+    }
     
-    
-    
+    @IBAction func greenTeamPlayTapped(_ sender: UIButton) {
+         print("TAPPED")
+        greenInPlay = true
+        if !greenInPlay {
+            bottomButton.isEnabled = false
+            topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
+           
+           
+        } else {
+            bottomTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(bottomTimerCounter), userInfo: nil, repeats: true)
+            topButton.isEnabled = false
+            return topTeamTimer.invalidate()
+        }
+     
+        
+       greenInPlay = true
+        if count <= 0 {
+            let nilPauses = UIAlertController(title: "No time set", message: "go to settings to add the time", preferredStyle: .alert)
+            nilPauses.addAction(UIAlertAction(title: "No time", style: .default))
+            self.present(nilPauses, animated: true)
+            return
+        }
+        
+        if !timerCounting{
+            
+            topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
+            timerCounting = true
+            return
+        }
+    }
     
     @IBAction func settingsBtnTapped(_ sender: UIButton) {
         let settingsVC =  self.storyboard?.instantiateViewController(withIdentifier: "SettingsVC") as! SettingsVC;
@@ -58,16 +123,24 @@ class TimerVC: UIViewController {
     }
  
     @IBAction func PauseBtnTapped(_ sender: UIButton) {
-        if(timerCounting) {
+        if count <= 0 {
+            let nilPauses = UIAlertController(title: "No time set", message: "go to settings to add the time", preferredStyle: .alert)
+            nilPauses.addAction(UIAlertAction(title: "No time", style: .default))
+            self.present(nilPauses, animated: true)
+            return
+        }
+        if(greenInPlay || darkInPlay) {
+            bottomTeamTimer.invalidate()
+            topTeamTimer.invalidate()
             timerCounting = false
-            timer.invalidate()
+            darkInPlay = false
+            greenInPlay = false
             pauseBtn.setImage(UIImage(named: "pause"), for: .normal)
           
         } else {
-            timerCounting = true
-            pauseBtn.setImage(UIImage(named: "play"), for: .normal)
-          
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
+//            timerCounting = true
+//            pauseBtn.setImage(UIImage(named: "pause"), for: .normal)
+             
         }
         
        
@@ -84,6 +157,23 @@ class TimerVC: UIViewController {
         let time = secondsToHoursMinSecs(seconds: count)
         let timeString = makeTimeString(min: time.0, seconds: time.1)
         greenTeamLabel.text = timeString
+        
+        }
+          
+        
+       
+    }
+    
+    @objc func bottomTimerCounter() -> Void {
+        if count <= 0 {
+            count = 1
+        
+        } else {
+            count -= 1
+        let time = secondsToHoursMinSecs(seconds: count)
+        let timeString = makeTimeString(min: time.0, seconds: time.1)
+        blackTeamLabel.text = timeString
+        
         }
           
         
@@ -105,7 +195,8 @@ class TimerVC: UIViewController {
     
     
     @IBAction func resetTapped(_ sender: UIButton) {
-        timer.invalidate()
+        topTeamTimer.invalidate()
+        bottomTeamTimer.invalidate()
         let alert = UIAlertController(title: "Restart Timer?", message: "Are you sure you would like to restart timer", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "CANCEL", style: .cancel, handler: { (_) in
             //do nothing
@@ -113,9 +204,10 @@ class TimerVC: UIViewController {
         alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { (_) in
             self.didResetDelegate?.didReset(resetMin: self.count)
             self.count = 0
-            self.timer.invalidate()
+            self.topTeamTimer.invalidate()
+            self.bottomTeamTimer.invalidate()
             self.greenTeamLabel.text = self.makeTimeString(min: 0, seconds: 0)
-            
+            self.blackTeamLabel.text = self.makeTimeString(min: 0, seconds: 0)
             
              
             
@@ -132,6 +224,7 @@ extension TimerVC: SettingsVCDelegate {
     func didChangeMin(min: inout Int) {
         count = min * 60
         self.greenTeamLabel.text = self.makeTimeString(min: min, seconds: 0)
+        self.blackTeamLabel.text = self.makeTimeString(min: min, seconds: 0)
     }
     
    

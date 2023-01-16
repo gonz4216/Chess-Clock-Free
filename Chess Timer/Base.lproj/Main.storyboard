@@ -18,8 +18,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XiS-uQ-QZM">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="424.66666666666669"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M6P-Ek-Chy">
-                                        <rect key="frame" x="120.00000000000001" y="225.66666666666663" width="150.33333333333337" height="79"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M6P-Ek-Chy">
+                                        <rect key="frame" x="118.66666666666667" y="225.66666666666663" width="152.66666666666663" height="79"/>
                                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="66"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -30,12 +30,24 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Br6-EA-wph">
+                                        <rect key="frame" x="0.0" y="0.0" width="390" height="400"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain"/>
+                                        <connections>
+                                            <action selector="greenTeamPlayTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vao-3w-Hp6"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.50980392159999999" green="0.61176470589999998" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="top" secondItem="Br6-EA-wph" secondAttribute="bottom" constant="-400" id="6FB-iF-u1o"/>
                                     <constraint firstItem="M6P-Ek-Chy" firstAttribute="centerX" secondItem="XiS-uQ-QZM" secondAttribute="centerX" id="91x-LW-pSl"/>
+                                    <constraint firstItem="Br6-EA-wph" firstAttribute="leading" secondItem="XiS-uQ-QZM" secondAttribute="leading" id="HnC-6z-33p"/>
+                                    <constraint firstItem="Br6-EA-wph" firstAttribute="top" secondItem="XiS-uQ-QZM" secondAttribute="top" id="Xtf-Hm-8Ev"/>
                                     <constraint firstItem="M6P-Ek-Chy" firstAttribute="top" secondItem="qxq-vs-0Su" secondAttribute="bottom" constant="5" id="ZdI-hK-dHF"/>
                                     <constraint firstAttribute="bottom" secondItem="M6P-Ek-Chy" secondAttribute="bottom" constant="120" id="lex-mf-gBg"/>
+                                    <constraint firstAttribute="trailing" secondItem="Br6-EA-wph" secondAttribute="trailing" id="qEq-tt-vcE"/>
                                     <constraint firstItem="qxq-vs-0Su" firstAttribute="centerX" secondItem="XiS-uQ-QZM" secondAttribute="centerX" id="wTP-K1-lus"/>
                                 </constraints>
                             </view>
@@ -68,8 +80,8 @@
                                     <action selector="PauseBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OTp-aC-euE"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pcf-I4-kTy">
-                                <rect key="frame" x="120.00000000000001" y="519.66666666666663" width="150.33333333333337" height="79"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pcf-I4-kTy">
+                                <rect key="frame" x="118.66666666666667" y="519.66666666666663" width="152.66666666666663" height="79"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="66"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -80,19 +92,31 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogU-Pg-rRb">
+                                <rect key="frame" x="0.0" y="477" width="390" height="327"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <connections>
+                                    <action selector="darkTeamPlayTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eCv-Vp-ym7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.25098039220000001" green="0.37647058820000001" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="ogU-Pg-rRb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0D6-Y2-qrO"/>
+                            <constraint firstItem="ogU-Pg-rRb" firstAttribute="top" secondItem="vIz-DN-v6c" secondAttribute="bottom" constant="13" id="30V-2m-IvV"/>
                             <constraint firstItem="Pnn-wJ-VBc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="41" id="4tB-F9-f6q"/>
                             <constraint firstItem="Pnn-wJ-VBc" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="8iR-Ad-3jM"/>
                             <constraint firstItem="43l-mn-gIj" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="AQt-FC-yzn"/>
                             <constraint firstItem="43l-mn-gIj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Pnn-wJ-VBc" secondAttribute="trailing" constant="8" symbolic="YES" id="IFK-CE-3S5"/>
                             <constraint firstItem="Hlc-Dv-Uy1" firstAttribute="top" secondItem="Pcf-I4-kTy" secondAttribute="bottom" constant="5" id="PEl-P5-3xP"/>
                             <constraint firstItem="Pcf-I4-kTy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QQE-0i-uDd"/>
+                            <constraint firstAttribute="bottom" secondItem="ogU-Pg-rRb" secondAttribute="bottom" constant="40" id="TNK-eO-4Jv"/>
                             <constraint firstItem="Pcf-I4-kTy" firstAttribute="top" secondItem="43l-mn-gIj" secondAttribute="bottom" constant="50" id="Tsq-Q7-Ibb"/>
                             <constraint firstItem="43l-mn-gIj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VUv-7b-u1A"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vIz-DN-v6c" secondAttribute="trailing" constant="40.333333333333371" id="XX8-4U-meW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ogU-Pg-rRb" secondAttribute="trailing" id="bQw-di-Nxs"/>
                             <constraint firstItem="vIz-DN-v6c" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="43l-mn-gIj" secondAttribute="trailing" constant="8" symbolic="YES" id="cMF-Cj-8R3"/>
                             <constraint firstItem="vIz-DN-v6c" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="dx3-QY-0gt"/>
                             <constraint firstItem="XiS-uQ-QZM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="iS3-sb-U7M"/>
@@ -105,8 +129,10 @@
                     <navigationItem key="navigationItem" id="dxp-eP-h7H"/>
                     <connections>
                         <outlet property="blackTeamLabel" destination="Pcf-I4-kTy" id="QJW-RQ-PhW"/>
+                        <outlet property="bottomButton" destination="ogU-Pg-rRb" id="2qB-0N-BWT"/>
                         <outlet property="greenTeamLabel" destination="M6P-Ek-Chy" id="IBM-tg-bRe"/>
                         <outlet property="pauseBtn" destination="Pnn-wJ-VBc" id="8DB-b8-UuT"/>
+                        <outlet property="topButton" destination="Br6-EA-wph" id="Kmx-FW-yK7"/>
                         <outlet property="topTap" destination="qxq-vs-0Su" id="McA-En-Oor"/>
                         <outlet property="topTime" destination="M6P-Ek-Chy" id="crj-fB-R3b"/>
                     </connections>
@@ -174,8 +200,8 @@
                                     <constraint firstAttribute="height" constant="105" id="xhr-w2-UHm"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nw8-zH-lUn">
-                                <rect key="frame" x="195" y="349.66666666666669" width="0.0" height="0.0"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Minutes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nw8-zH-lUn">
+                                <rect key="frame" x="93.666666666666671" y="297" width="202.66666666666663" height="52.666666666666686"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="44"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
