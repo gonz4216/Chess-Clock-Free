@@ -35,7 +35,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain"/>
                                         <connections>
-                                            <action selector="greenTeamPlayTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vao-3w-Hp6"/>
+                                            <action selector="topTeamTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JsD-9p-b1J"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -97,7 +97,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain"/>
                                 <connections>
-                                    <action selector="darkTeamPlayTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eCv-Vp-ym7"/>
+                                    <action selector="bottomTeamTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mB3-q4-LdW"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -4,30 +4,31 @@
 //
 //  Created by Ethan Gonsalves on 2023-01-12.
 //
-
+// TODO: Fix button disabled, fix Alerts for button tapped, create logo, create onboarding if possible , do load up screen, fix constraint errors,
 import UIKit
 protocol TimerVCDelegate {
     func didReset(resetMin: Int)
 }
 class TimerVC: UIViewController {
     
-
+    
     var didResetDelegate: TimerVCDelegate?
- 
-    var topTeamTimer: Timer = Timer()
-    var bottomTeamTimer: Timer = Timer()
+    
+    weak  var topTeamTimer: Timer?
+    weak  var bottomTeamTimer: Timer?
     
     
-    var count: Int = Int()
+    var topCount: Int = Int()
+    var botCount: Int = Int()
     var timerCounting = false
-    var greenInPlay = false
-    var darkInPlay = false
-  
+    var topCounting: Bool = false
+    var bottomCounting: Bool = false
     
     
     
     
- 
+    
+    
     @IBOutlet var pauseBtn: UIButton!
     @IBOutlet var topTap: UILabel!
     @IBOutlet var topTime: UILabel!
@@ -42,76 +43,61 @@ class TimerVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         rotate()
-        print("WORKED")
- 
-    }
- 
-   //to do make another clock
-    //redo process for the bottom team
-    //get a clickable view that allows start and stop time
-    
-    @IBAction func darkTeamPlayTapped(_ sender: UIButton) {
-    print("TAPPED")
-        darkInPlay = true
-        if !darkInPlay {
-            topButton.isEnabled = false
-            bottomTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(bottomTimerCounter), userInfo: nil, repeats: true)
-           
-           
-           
-        } else {
-            topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
-            bottomButton.isEnabled = false
-            return bottomTeamTimer.invalidate()
-        }
         
+        
+    }
+    
+     
+    
+    //TODO: Redo taped section
+    //TODO: Button is still tapable when no time
+    
+     //MARK: - - TIME TAPPED
+    @IBAction func bottomTeamTapped(_ sender: UIButton) {
+        noTimeAlert()
+        bottomTeamTimer?.invalidate()
+        bottomCounting = false
+        topCounting = true
+        
+        if !bottomCounting {
+            topTeamTimer?.invalidate()
+            topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TopTimerCounter), userInfo: nil, repeats: true)
+        } else {
+            bottomTeamTimer?.invalidate()
+        }
        
-     
-        if count <= 0 {
-            let nilPauses = UIAlertController(title: "No time set", message: "go to settings to add the time", preferredStyle: .alert)
-            nilPauses.addAction(UIAlertAction(title: "No time", style: .default))
-            self.present(nilPauses, animated: true)
-            return
+            
+        
+       print(botCount)
+                                      
+        print("bottom btn tapped")
+        
+    }
+   
+    
+    @IBAction func topTeamTapped(_ sender: UIButton) {
+    noTimeAlert()
+        topTeamTimer?.invalidate()
+    bottomCounting = true
+    topCounting = false
+        if !topCounting {
+            bottomTeamTimer?.invalidate()
+            bottomTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(bottomTimerCounter), userInfo: nil, repeats: true)
+        } else {
+            topTeamTimer?.invalidate()
         }
-        
-        
-             
-        
-         
+  
+ 
+        print("TAPPED")
+
     }
     
-    @IBAction func greenTeamPlayTapped(_ sender: UIButton) {
-         print("TAPPED")
-        greenInPlay = true
-        if !greenInPlay {
-            bottomButton.isEnabled = false
-            topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
-           
-           
-        } else {
-            bottomTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(bottomTimerCounter), userInfo: nil, repeats: true)
-            topButton.isEnabled = false
-            return topTeamTimer.invalidate()
-        }
-     
-        
-       greenInPlay = true
-        if count <= 0 {
-            let nilPauses = UIAlertController(title: "No time set", message: "go to settings to add the time", preferredStyle: .alert)
-            nilPauses.addAction(UIAlertAction(title: "No time", style: .default))
-            self.present(nilPauses, animated: true)
-            return
-        }
-        
-        if !timerCounting{
-            
-            topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
-            timerCounting = true
-            return
-        }
-    }
+    //MARK: --^^  TIME TAPPED ^^
+
     
     @IBAction func settingsBtnTapped(_ sender: UIButton) {
+        topTeamTimer?.invalidate()
+        bottomTeamTimer?.invalidate()
         let settingsVC =  self.storyboard?.instantiateViewController(withIdentifier: "SettingsVC") as! SettingsVC;
         self.present(settingsVC, animated: true)
         settingsVC.delegate = self
@@ -121,63 +107,61 @@ class TimerVC: UIViewController {
         topTap.transform = CGAffineTransform(rotationAngle: .pi)
         topTime.transform = CGAffineTransform(rotationAngle: .pi)
     }
- 
+    
     @IBAction func PauseBtnTapped(_ sender: UIButton) {
-        if count <= 0 {
+        if topCount <= 0 && botCount <= 0 {
             let nilPauses = UIAlertController(title: "No time set", message: "go to settings to add the time", preferredStyle: .alert)
             nilPauses.addAction(UIAlertAction(title: "No time", style: .default))
             self.present(nilPauses, animated: true)
             return
         }
-        if(greenInPlay || darkInPlay) {
-            bottomTeamTimer.invalidate()
-            topTeamTimer.invalidate()
+         
+        
+        if(topCounting || bottomCounting) {
+            bottomTeamTimer?.invalidate()
+            topTeamTimer?.invalidate()
             timerCounting = false
-            darkInPlay = false
-            greenInPlay = false
+            bottomCounting = false
+            topCounting = false
             pauseBtn.setImage(UIImage(named: "pause"), for: .normal)
-          
-        } else {
-//            timerCounting = true
-//            pauseBtn.setImage(UIImage(named: "pause"), for: .normal)
-             
+            
         }
         
-       
-       
+        
+        
     }
-   
     
-    @objc func timerCounter() -> Void {
-        if count <= 0 {
-            count = 1
-        
+    
+    @objc func TopTimerCounter() -> Void {
+        if topCount <= 0 {
+            topCount = 1
+            
         } else {
-            count -= 1
-        let time = secondsToHoursMinSecs(seconds: count)
-        let timeString = makeTimeString(min: time.0, seconds: time.1)
-        greenTeamLabel.text = timeString
-        
+            topCount -= 1
+            let time = secondsToHoursMinSecs(seconds: topCount)
+            let timeString = makeTimeString(min: time.0, seconds: time.1)
+            greenTeamLabel.text = timeString
+            
         }
-          
         
-       
+        
+        
     }
     
     @objc func bottomTimerCounter() -> Void {
-        if count <= 0 {
-            count = 1
-        
+        if botCount <= 0 {
+            botCount = 1
+            
         } else {
-            count -= 1
-        let time = secondsToHoursMinSecs(seconds: count)
-        let timeString = makeTimeString(min: time.0, seconds: time.1)
-        blackTeamLabel.text = timeString
-        
+            botCount -= 1
+            let time = secondsToHoursMinSecs(seconds: botCount)
+            let botTimeString = makeBottomTimeString(min: time.0, seconds: time.1)
+            blackTeamLabel.text = botTimeString
+            
         }
-          
         
-       
+        
+        
     }
     
     func secondsToHoursMinSecs(seconds: Int) -> (Int, Int) {
@@ -186,30 +170,45 @@ class TimerVC: UIViewController {
     
     func makeTimeString( min: Int, seconds: Int) -> String {
         var timeString = ""
-     
+        
         timeString += String(format: "%02d", min)
         timeString += " : "
         timeString += String(format: "%02d", seconds)
+        
         return timeString
+    }
+    func makeBottomTimeString( min: Int, seconds: Int) -> String {
+        var botTimeString = ""
+        
+        botTimeString += String(format: "%02d", min)
+        botTimeString += " : "
+        botTimeString += String(format: "%02d", seconds)
+        
+        return botTimeString
     }
     
     
     @IBAction func resetTapped(_ sender: UIButton) {
-        topTeamTimer.invalidate()
-        bottomTeamTimer.invalidate()
+        topTeamTimer?.invalidate()
+        bottomTeamTimer?.invalidate()
+        topCount = 0
+        botCount = 0
         let alert = UIAlertController(title: "Restart Timer?", message: "Are you sure you would like to restart timer", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "CANCEL", style: .cancel, handler: { (_) in
             //do nothing
         }))
         alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { (_) in
-            self.didResetDelegate?.didReset(resetMin: self.count)
-            self.count = 0
-            self.topTeamTimer.invalidate()
-            self.bottomTeamTimer.invalidate()
+            //MARK: to do
+            self.didResetDelegate?.didReset(resetMin: self.topCount)
+            self.didResetDelegate?.didReset(resetMin: self.botCount)
+            self.topCount = 0
+            self.botCount = 0
+            self.topTeamTimer?.invalidate()
+            self.bottomTeamTimer?.invalidate()
             self.greenTeamLabel.text = self.makeTimeString(min: 0, seconds: 0)
-            self.blackTeamLabel.text = self.makeTimeString(min: 0, seconds: 0)
+            self.blackTeamLabel.text = self.makeBottomTimeString(min: 0, seconds: 0)
             
-             
+            
             
         }))
         
@@ -222,14 +221,34 @@ class TimerVC: UIViewController {
 
 extension TimerVC: SettingsVCDelegate {
     func didChangeMin(min: inout Int) {
-        count = min * 60
+        topCount = min * 60
+        botCount = min * 60
         self.greenTeamLabel.text = self.makeTimeString(min: min, seconds: 0)
-        self.blackTeamLabel.text = self.makeTimeString(min: min, seconds: 0)
+        self.blackTeamLabel.text = self.makeBottomTimeString(min: min, seconds: 0)
     }
     
-   
     
-     
+    
+    
     
     
 }
+
+
+extension TimerVC {
+    func noTimeAlert() {
+        if topCount <= 0 && botCount <= 0 {
+            
+            let nilPauses = UIAlertController(title: "No time set", message: "go to settings to add the time", preferredStyle: .alert)
+            nilPauses.addAction(UIAlertAction(title: "No time", style: .default))
+            self.present(nilPauses, animated: true)
+            topTeamTimer?.invalidate()
+            bottomTeamTimer?.invalidate()
+           
+        }
+    }
+    
+}
+
+                        
+
