@@ -4,7 +4,8 @@
 //
 //  Created by Ethan Gonsalves on 2023-01-12.
 //
-// TODO: Fix button disabled, fix Alerts for button tapped, create logo, create onboarding if possible , do load up screen, fix constraint errors,
+// TODO: When a player hits 0 reset the timer
+// TODO: Make alert too
 import UIKit
 protocol TimerVCDelegate {
     func didReset(resetMin: Int)
@@ -43,24 +44,25 @@ class TimerVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         rotate()
-        
+        timerFinished()
+       
         
     }
     
      
     
-    //TODO: Redo taped section
-    //TODO: Button is still tapable when no time
+    //TODO:   Refactor code && Redo style(Color of font when active and now active, add close button in settings vc and dismis the vc when clicked + add onboarding in the future and make redo github repo, 
     
      //MARK: - - TIME TAPPED
     @IBAction func bottomTeamTapped(_ sender: UIButton) {
-        noTimeAlert()
+   
         bottomTeamTimer?.invalidate()
         bottomCounting = false
         topCounting = true
         
         if !bottomCounting {
             topTeamTimer?.invalidate()
+       
             topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TopTimerCounter), userInfo: nil, repeats: true)
         } else {
             bottomTeamTimer?.invalidate()
@@ -68,15 +70,13 @@ class TimerVC: UIViewController {
        
             
         
-       print(botCount)
-                                      
-        print("bottom btn tapped")
-        
+       
+        noTimeAlert()
     }
    
     
     @IBAction func topTeamTapped(_ sender: UIButton) {
-    noTimeAlert()
+  
         topTeamTimer?.invalidate()
     bottomCounting = true
     topCounting = false
@@ -86,9 +86,11 @@ class TimerVC: UIViewController {
         } else {
             topTeamTimer?.invalidate()
         }
-  
+        noTimeAlert()
+         
+
  
-        print("TAPPED")
+        
 
     }
     
@@ -128,14 +130,15 @@ class TimerVC: UIViewController {
         }
         
         
-        
     }
     
     
     @objc func TopTimerCounter() -> Void {
         if topCount <= 0 {
-            topCount = 1
-            
+            topTeamTimer?.invalidate()
+            botCount = 0
+            blackTeamLabel.text = makeBottomTimeString(min: 0, seconds: 0)
+            print("n\(botCount) bot")
         } else {
             topCount -= 1
             let time = secondsToHoursMinSecs(seconds: topCount)
@@ -143,14 +146,17 @@ class TimerVC: UIViewController {
             greenTeamLabel.text = timeString
             
         }
-        
+        print(topCount)
+      
         
         
     }
     
     @objc func bottomTimerCounter() -> Void {
         if botCount <= 0 {
-            botCount = 1
+            bottomTeamTimer?.invalidate()
+            botCount = 0
+            greenTeamLabel.text = makeBottomTimeString(min: 0, seconds: 0)
             
         } else {
             botCount -= 1
@@ -160,7 +166,7 @@ class TimerVC: UIViewController {
             
         }
         
-        
+         
         
     }
     
@@ -213,6 +219,22 @@ class TimerVC: UIViewController {
         }))
         
         self.present(alert, animated: true)
+    }
+    
+    func timerFinished() {
+        if topCount == 0 || botCount == 0{
+            didResetDelegate?.didReset(resetMin: self.topCount)
+            didResetDelegate?.didReset(resetMin: self.botCount)
+            topCount = 0
+            botCount = 0
+            topTeamTimer?.invalidate()
+            bottomTeamTimer?.invalidate()
+            greenTeamLabel.text = self.makeTimeString(min: 0, seconds: 0)
+            blackTeamLabel.text = self.makeBottomTimeString(min: 0, seconds: 0)
+             
+        }
+         
+        
     }
     
     
