@@ -68,6 +68,9 @@ class SettingsVC: UIViewController {
     }
     
      
+    @IBAction func dismissVC(_ sender: UIButton) {
+        dismiss(animated: true)
+    }
     
 }
 extension SettingsVC: TimerVCDelegate {

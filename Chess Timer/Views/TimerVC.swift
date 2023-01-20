@@ -46,12 +46,15 @@ class TimerVC: UIViewController {
         rotate()
         timerFinished()
        
+        bottomCounting = false
+        topCounting = false
         
+      
     }
     
      
     
-    //TODO:   Refactor code && Redo style(Color of font when active and now active, add close button in settings vc and dismis the vc when clicked + add onboarding in the future and make redo github repo, 
+    //TODO:   Refactor code && Redo style(Color of font when active and now active, add close button in settings vc and dismis the vc when clicked + add onboarding in the future and make redo github repo,
     
      //MARK: - - TIME TAPPED
     @IBAction func bottomTeamTapped(_ sender: UIButton) {
@@ -62,10 +65,12 @@ class TimerVC: UIViewController {
         
         if !bottomCounting {
             topTeamTimer?.invalidate()
-       
+        
             topTeamTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TopTimerCounter), userInfo: nil, repeats: true)
         } else {
             bottomTeamTimer?.invalidate()
+           
+
         }
        
             
@@ -87,10 +92,9 @@ class TimerVC: UIViewController {
             topTeamTimer?.invalidate()
         }
         noTimeAlert()
-         
-
+  
  
-        
+ 
 
     }
     
